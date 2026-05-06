@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details - Dubai Traders | Cosmetics & Perfumes</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Alpine.js CDN -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700&display=swap');
+        
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .btn-primary {
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(225, 29, 72, 0.3);
+        }
+        
+        .product-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900" x-data="productPage()">
+    
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 bg-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-perfume text-rose-600 text-2xl"></i>
+                    <h1 class="text-lg sm:text-xl font-bold text-gray-900">Dubai Traders</h1>
+                    <img src="images/logo.svg" alt="logo" class="w-10 h-10">
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html" class="text-gray-700 hover:text-rose-600 transition">Home</a>
+                    <a href="index.html#products" class="text-gray-700 hover:text-rose-600 transition">Products</a>
+                    <a href="index.html#about" class="text-gray-700 hover:text-rose-600 transition">About</a>
+                    <a href="index.html#testimonials" class="text-gray-700 hover:text-rose-600 transition">Reviews</a>
+                    <a href="contact.html" class="text-gray-700 hover:text-rose-600 transition">Contact</a>
+                </div>
+                
+                <!-- Cart & Mobile Menu Button -->
+                <div class="flex items-center space-x-4">
+                    <button class="relative text-gray-700 hover:text-rose-600 transition">
+                        <a href="cart.html"><i class="fas fa-shopping-bag text-xl"></i></a>
+                        <span class="absolute -top-2 -right-2 bg-rose-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center" x-text="cartCount"></span>
+                    </button>
+                    <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden text-gray-700">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Mobile Menu -->
+            <div x-show="mobileMenuOpen" @click.outside="mobileMenuOpen = false" class="md:hidden pb-4 space-y-2">
+                <a href="index.html" class="block text-gray-700 hover:text-rose-600 py-2">Home</a>
+                <a href="index.html#products" class="block text-gray-700 hover:text-rose-600 py-2">Products</a>
+                <a href="index.html#about" class="block text-gray-700 hover:text-rose-600 py-2">About</a>
+                <a href="index.html#testimonials" class="block text-gray-700 hover:text-rose-600 py-2">Reviews</a>
+                <a href="contact.html" class="block text-gray-700 hover:text-rose-600 py-2">Contact</a>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Page Header -->
+    <section class="bg-gradient-to-b from-rose-50 to-white py-8 sm:py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Breadcrumb -->
+            <nav class="flex items-center gap-2 text-sm text-gray-500 mb-4">
+                <a href="index.html" class="hover:text-rose-600 transition">Home</a>
+                <i class="fas fa-chevron-right text-xs text-gray-400"></i>
+                <a href="index.html#products" class="hover:text-rose-600 transition">Products</a>
+                <i class="fas fa-chevron-right text-xs text-gray-400"></i>
+                <span class="text-gray-900 font-medium" x-text="product.name"></span>
+            </nav>
+            <div class="flex items-start justify-between gap-4">
+                <div class="min-w-0">
+                    <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 leading-tight" x-text="product.name"></h1>
+                    <p class="text-gray-600 mt-2 text-sm sm:text-base" x-text="product.subtitle"></p>
+                    <div class="flex flex-wrap items-center gap-2 mt-3">
+                        <span class="inline-flex items-center gap-2 bg-rose-50 text-rose-700 text-xs sm:text-sm px-3 py-1 rounded-full font-semibold">
+                            <i class="fas fa-check-circle text-rose-600"></i> 100% Genuine
+                        </span>
+                        <span class="inline-flex items-center gap-2 bg-amber-50 text-amber-700 text-xs sm:text-sm px-3 py-1 rounded-full font-semibold">
+                            <i class="fas fa-truck text-amber-600"></i> Same-day in Peshawar
+                        </span>
+                        <span class="inline-flex items-center gap-2 bg-gray-100 text-gray-700 text-xs sm:text-sm px-3 py-1 rounded-full font-semibold" x-text="product.brand"></span>
+                    </div>
+                </div>
+                <a href="index.html#products" class="hidden sm:flex items-center gap-2 text-rose-600 font-semibold hover:text-rose-700 transition text-sm whitespace-nowrap">
+                    <i class="fas fa-arrow-left"></i> Back to Products
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Product Content -->
+    <section class="py-6 sm:py-10 pb-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10">
+                
+                <!-- Left: Image/Gallery -->
+                <div class="space-y-4">
+                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                        <div class="h-72 sm:h-96 flex items-center justify-center" :class="product.bg">
+                            <div class="text-center">
+                                <i class="text-7xl sm:text-8xl" :class="product.icon"></i>
+                                <p class="text-gray-600 text-sm mt-4" x-show="!product.image">Product preview (icon)</p>
+                            </div>
+                        </div>
+                        <div class="p-4 sm:p-5 flex items-center justify-between gap-4">
+                            <div class="min-w-0">
+                                <p class="text-sm text-gray-500">SKU</p>
+                                <p class="font-semibold text-gray-900 truncate" x-text="product.sku"></p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-sm text-gray-500">Availability</p>
+                                <p class="font-semibold" :class="product.inStock ? 'text-green-600' : 'text-red-600'" x-text="product.inStock ? 'In Stock' : 'Out of Stock'"></p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Trust strip -->
+                    <div class="grid grid-cols-3 gap-3">
+                        <div class="bg-white rounded-xl border border-gray-100 p-4 text-center">
+                            <i class="fas fa-shield-alt text-rose-500 text-xl"></i>
+                            <p class="text-xs text-gray-500 mt-2">Authenticity</p>
+                            <p class="text-sm font-semibold text-gray-900">Guaranteed</p>
+                        </div>
+                        <div class="bg-white rounded-xl border border-gray-100 p-4 text-center">
+                            <i class="fas fa-rotate-left text-rose-500 text-xl"></i>
+                            <p class="text-xs text-gray-500 mt-2">Returns</p>
+                            <p class="text-sm font-semibold text-gray-900">Easy</p>
+                        </div>
+                        <div class="bg-white rounded-xl border border-gray-100 p-4 text-center">
+                            <i class="fas fa-lock text-rose-500 text-xl"></i>
+                            <p class="text-xs text-gray-500 mt-2">Payments</p>
+                            <p class="text-sm font-semibold text-gray-900">Secure</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right: Purchase -->
+                <div class="space-y-5">
+                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 sm:p-6">
+                        <div class="flex items-start justify-between gap-3">
+                            <div>
+                                <p class="text-xs sm:text-sm text-gray-500">Price</p>
+                                <div class="flex items-end gap-3 mt-1 flex-wrap">
+                                    <p class="text-3xl sm:text-4xl font-bold text-rose-600" x-text="'PKR ' + product.price.toLocaleString()"></p>
+                                    <p class="text-sm text-gray-400 line-through" x-show="product.originalPrice" x-text="'PKR ' + product.originalPrice.toLocaleString()"></p>
+                                    <span x-show="product.originalPrice" class="text-xs font-bold bg-green-50 text-green-700 px-2 py-1 rounded-full">
+                                        SAVE <span x-text="Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)"></span>%
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-xs sm:text-sm text-gray-500">Rating</p>
+                                <div class="flex items-center gap-1 justify-end mt-1">
+                                    <i class="fas fa-star text-amber-400"></i>
+                                    <i class="fas fa-star text-amber-400"></i>
+                                    <i class="fas fa-star text-amber-400"></i>
+                                    <i class="fas fa-star text-amber-400"></i>
+                                    <i class="fas fa-star-half-stroke text-amber-400"></i>
+                                    <span class="text-xs text-gray-500 ml-1">(4.6)</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Short highlights -->
+                        <div class="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div class="bg-gray-50 rounded-xl p-4 border border-gray-100">
+                                <p class="text-xs text-gray-500">Best For</p>
+                                <p class="font-semibold text-gray-900 text-sm mt-1" x-text="product.bestFor"></p>
+                            </div>
+                            <div class="bg-gray-50 rounded-xl p-4 border border-gray-100">
+                                <p class="text-xs text-gray-500">Size</p>
+                                <p class="font-semibold text-gray-900 text-sm mt-1" x-text="product.size"></p>
+                            </div>
+                        </div>
+                        
+                        <!-- Quantity + actions -->
+                        <div class="mt-5 flex flex-col sm:flex-row gap-3">
+                            <div class="flex items-center border border-gray-200 rounded-xl overflow-hidden w-full sm:w-auto">
+                                <button @click="qty = Math.max(1, qty - 1)" class="w-12 h-12 flex items-center justify-center text-gray-600 hover:bg-rose-50 hover:text-rose-600 transition">
+                                    <i class="fas fa-minus text-xs"></i>
+                                </button>
+                                <div class="w-full sm:w-16 h-12 flex items-center justify-center font-bold text-gray-900" x-text="qty"></div>
+                                <button @click="qty = qty + 1" class="w-12 h-12 flex items-center justify-center text-gray-600 hover:bg-rose-50 hover:text-rose-600 transition">
+                                    <i class="fas fa-plus text-xs"></i>
+                                </button>
+                            </div>
+                            
+                            <button
+                                @click="addToCart()"
+                                class="btn-primary w-full bg-rose-600 text-white h-12 rounded-xl font-bold hover:bg-rose-700 transition flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+                                :disabled="!product.inStock"
+                            >
+                                <i class="fas fa-shopping-cart"></i>
+                                Add to Cart
+                            </button>
+                        </div>
+                        
+                        <a
+                            :href="whatsappLink"
+                            target="_blank"
+                            class="w-full mt-3 flex items-center justify-center gap-2 bg-green-500 text-white h-12 rounded-xl font-semibold hover:bg-green-600 transition text-sm"
+                        >
+                            <i class="fab fa-whatsapp text-lg"></i>
+                            Order via WhatsApp
+                        </a>
+                        
+                        <div class="bg-rose-50 rounded-xl p-4 mt-4 flex items-start gap-2">
+                            <i class="fas fa-clock text-rose-500 mt-0.5 flex-shrink-0 text-sm"></i>
+                            <p class="text-rose-700 text-xs font-medium">Same-day delivery available within Peshawar. Order before 6 PM.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Details tabs -->
+                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 sm:p-6">
+                        <div class="flex flex-wrap gap-2">
+                            <button @click="tab = 'description'" class="px-4 py-2 rounded-xl text-sm font-semibold transition"
+                                :class="tab === 'description' ? 'bg-rose-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'">
+                                Description
+                            </button>
+                            <button @click="tab = 'notes'" class="px-4 py-2 rounded-xl text-sm font-semibold transition"
+                                :class="tab === 'notes' ? 'bg-rose-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'">
+                                Key Notes
+                            </button>
+                            <button @click="tab = 'how'" class="px-4 py-2 rounded-xl text-sm font-semibold transition"
+                                :class="tab === 'how' ? 'bg-rose-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'">
+                                How to Use
+                            </button>
+                        </div>
+                        
+                        <div class="mt-4 text-sm text-gray-700 leading-relaxed">
+                            <div x-show="tab === 'description'">
+                                <p x-text="product.description"></p>
+                            </div>
+                            <div x-show="tab === 'notes'">
+                                <ul class="space-y-2">
+                                    <template x-for="note in product.notes" :key="note">
+                                        <li class="flex items-start gap-2">
+                                            <i class="fas fa-sparkles text-rose-500 mt-0.5"></i>
+                                            <span x-text="note"></span>
+                                        </li>
+                                    </template>
+                                </ul>
+                            </div>
+                            <div x-show="tab === 'how'">
+                                <ul class="space-y-2">
+                                    <template x-for="step in product.howToUse" :key="step">
+                                        <li class="flex items-start gap-2">
+                                            <span class="bg-rose-50 text-rose-700 text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0">✓</span>
+                                            <span x-text="step"></span>
+                                        </li>
+                                    </template>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <!-- Related products -->
+            <div class="mt-10 sm:mt-14">
+                <div class="flex items-end justify-between gap-4 mb-5">
+                    <div>
+                        <h2 class="text-2xl sm:text-3xl font-bold text-gray-900">You may also like</h2>
+                        <p class="text-gray-600 text-sm mt-1">More premium picks from our collection</p>
+                    </div>
+                    <a href="index.html#products" class="hidden sm:inline-flex items-center gap-2 text-rose-600 font-semibold hover:text-rose-700 transition text-sm whitespace-nowrap">
+                        View all <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <template x-for="p in relatedProducts" :key="p.id">
+                        <a class="product-card bg-white rounded-xl shadow-md hover:shadow-xl transition overflow-hidden block" :href="'product.html?id=' + p.id">
+                            <div class="h-44 flex items-center justify-center" :class="p.bg">
+                                <i class="text-6xl" :class="p.icon"></i>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-lg font-bold text-gray-900" x-text="p.name"></h3>
+                                <p class="text-gray-600 text-sm mt-1" x-text="p.subtitle"></p>
+                                <p class="text-2xl font-bold text-rose-600 mt-4" x-text="'PKR ' + p.price.toLocaleString()"></p>
+                                <div class="w-full bg-rose-600 text-white py-2 rounded-lg mt-4 text-center font-semibold hover:bg-rose-700 transition">
+                                    View Details
+                                </div>
+                            </div>
+                        </a>
+                    </template>
+                </div>
+            </div>
+            
+            <a href="index.html#products" class="sm:hidden mt-8 flex items-center justify-center gap-2 text-rose-600 font-semibold py-3 border border-rose-200 rounded-xl bg-rose-50 hover:bg-rose-100 transition text-sm">
+                <i class="fas fa-arrow-left"></i> Back to Products
+            </a>
+        </div>
+    </section>
+    
+    <!-- Toast -->
+    <div x-show="toast.show" x-transition.opacity class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-gray-900 text-white px-5 py-4 rounded-2xl shadow-xl flex items-center gap-3 text-sm font-semibold max-w-sm w-full mx-4">
+        <div class="bg-white bg-opacity-15 w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0">
+            <i class="fas fa-check"></i>
+        </div>
+        <div class="min-w-0">
+            <p class="font-bold">Added to cart</p>
+            <p class="text-gray-200 text-xs font-normal truncate" x-text="toast.message"></p>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Store Info -->
+                <div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <i class="fas fa-perfume text-rose-500 text-2xl"></i>
+                        <h3 class="text-xl font-bold text-white">Dubai Traders</h3>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-4">Cosmetics & Perfumes - Genuine Imported Products</p>
+                    <div class="space-y-3">
+                        <div class="flex items-start gap-3">
+                            <i class="fas fa-map-marker-alt text-rose-500 mt-1 flex-shrink-0"></i>
+                            <div>
+                                <p class="font-semibold text-white text-sm">Peshawar, Pakistan</p>
+                                <p class="text-gray-500 text-xs">Authentic cosmetics & perfumes store</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- Contact Details -->
+                <div>
+                    <h4 class="text-lg font-bold text-white mb-4">Contact Us</h4>
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-3">
+                            <i class="fas fa-whatsapp text-green-500 mt-1 flex-shrink-0"></i>
+                            <div>
+                                <p class="text-sm text-gray-400">WhatsApp</p>
+                                <a href="https://wa.me/923343534500" class="text-white font-semibold hover:text-rose-500 transition">03343534500</a>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <i class="fas fa-envelope text-rose-500 mt-1 flex-shrink-0"></i>
+                            <div>
+                                <p class="text-sm text-gray-400">Email</p>
+                                <a href="mailto:dubaitraders4500@gmail.com" class="text-white font-semibold hover:text-rose-500 transition break-all">dubaitraders4500@gmail.com</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="text-lg font-bold text-white mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="text-gray-400 hover:text-rose-500 transition">Home</a></li>
+                        <li><a href="index.html#products" class="text-gray-400 hover:text-rose-500 transition">Products</a></li>
+                        <li><a href="index.html#about" class="text-gray-400 hover:text-rose-500 transition">About</a></li>
+                        <li><a href="contact.html" class="text-gray-400 hover:text-rose-500 transition">Contact</a></li>
+                    </ul>
+                </div>
+    
+                <!-- Hours & Info -->
+                <div>
+                    <h4 class="text-lg font-bold text-white mb-4">Store Info</h4>
+                    <div class="space-y-3">
+                        <div>
+                            <p class="text-sm text-gray-400">Business Hours</p>
+                            <p class="text-white font-semibold">Mon - Sun: 10 AM - 10 PM</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-400">Delivery</p>
+                            <p class="text-white font-semibold">Same Day Available</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-400">Payment Methods</p>
+                            <p class="text-white font-semibold">Cash, JazzCash, Easypaisa</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Bottom Footer -->
+            <div class="border-t border-gray-800 mt-8 pt-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+                    <p class="text-gray-400 text-center md:text-left">&copy; 2024 Dubai Traders Cosmetics & Perfumes. All rights reserved.</p>
+                    <div class="flex justify-center md:justify-end gap-4">
+                        <a href="#" class="text-gray-400 hover:text-rose-500 transition">
+                            <i class="fab fa-facebook text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-rose-500 transition">
+                            <i class="fab fa-instagram text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-rose-500 transition">
+                            <i class="fab fa-whatsapp text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        function productPage() {
+            const products = [
+                {
+                    id: 1,
+                    name: 'Chanel No.5',
+                    subtitle: 'Classic Perfume · 100ml',
+                    brand: 'Chanel',
+                    sku: 'DT-CHN-0005',
+                    price: 8999,
+                    originalPrice: 10999,
+                    inStock: true,
+                    size: '100ml',
+                    bestFor: 'Classic everyday luxury',
+                    bg: 'bg-gradient-to-br from-pink-100 to-rose-100',
+                    icon: 'fas fa-spray-can text-rose-500',
+                    image: null,
+                    description: 'Chanel No.5 is a timeless signature fragrance with an elegant, luxurious finish. Perfect for day-to-night wear with a classic presence that stays memorable.',
+                    notes: ['Top: Aldehydes, Neroli', 'Heart: Jasmine, Rose', 'Base: Sandalwood, Vanilla'],
+                    howToUse: ['Spray on pulse points (wrists, neck).', 'Do not rub—let it settle naturally.', 'Layer with unscented moisturizer for longer wear.']
+                },
+                {
+                    id: 2,
+                    name: 'MAC Lipstick',
+                    subtitle: 'Professional Grade · Ruby Woo',
+                    brand: 'MAC',
+                    sku: 'DT-MAC-RW01',
+                    price: 3499,
+                    originalPrice: null,
+                    inStock: true,
+                    size: '3g',
+                    bestFor: 'Bold matte red look',
+                    bg: 'bg-gradient-to-br from-purple-100 to-pink-100',
+                    icon: 'fas fa-lipstick text-purple-600',
+                    image: null,
+                    description: 'A rich, professional-grade lipstick that delivers intense color payoff and a comfortable finish. A fan-favorite shade for statement looks.',
+                    notes: ['Finish: Matte', 'Color: True Red', 'Wear: Long-lasting'],
+                    howToUse: ['Prep lips with balm.', 'Apply directly or with a lip brush.', 'Blot once and reapply for extra longevity.']
+                },
+                {
+                    id: 3,
+                    name: 'Urban Decay Eyeshadow',
+                    subtitle: 'Pigmented & Lasting',
+                    brand: 'Urban Decay',
+                    sku: 'DT-UD-ES01',
+                    price: 4999,
+                    originalPrice: null,
+                    inStock: true,
+                    size: 'Palette',
+                    bestFor: 'Soft glam & party looks',
+                    bg: 'bg-gradient-to-br from-amber-100 to-yellow-100',
+                    icon: 'fas fa-eye text-amber-600',
+                    image: null,
+                    description: 'Highly pigmented eyeshadow for effortless blending and long wear. Build subtle daytime looks or bold evening glam with ease.',
+                    notes: ['Blendable texture', 'High pigment payoff', 'Long-wear finish'],
+                    howToUse: ['Apply primer for best results.', 'Use light shades to set base.', 'Build depth with darker shades in the crease.']
+                },
+                {
+                    id: 4,
+                    name: 'Dior Sauvage',
+                    subtitle: "Men's Fragrance · 75ml",
+                    brand: 'Dior',
+                    sku: 'DT-DIOR-SVG',
+                    price: 9999,
+                    originalPrice: 12999,
+                    inStock: true,
+                    size: '75ml',
+                    bestFor: 'Fresh, confident daily wear',
+                    bg: 'bg-gradient-to-br from-blue-100 to-cyan-100',
+                    icon: 'fas fa-droplet text-blue-600',
+                    image: null,
+                    description: 'A modern men’s fragrance with a fresh, powerful character. Clean, energizing notes that feel premium and confident all day.',
+                    notes: ['Top: Bergamot', 'Heart: Pepper, Lavender', 'Base: Amber, Woods'],
+                    howToUse: ['Spray 2–4 times on clean skin.', 'Focus on neck and chest.', 'Reapply lightly if needed after 6–8 hours.']
+                }
+            ];
+            
+            const getIdFromQuery = () => {
+                try {
+                    const url = new URL(window.location.href);
+                    const id = Number(url.searchParams.get('id'));
+                    return Number.isFinite(id) && id > 0 ? id : 1;
+                } catch {
+                    return 1;
+                }
+            };
+            
+            const pickProduct = (id) => products.find(p => p.id === id) || products[0];
+            const id = getIdFromQuery();
+            const selected = pickProduct(id);
+            
+            return {
+                mobileMenuOpen: false,
+                cartCount: 0,
+                qty: 1,
+                tab: 'description',
+                toast: { show: false, message: '' },
+                
+                products,
+                product: selected,
+                
+                get relatedProducts() {
+                    return this.products.filter(p => p.id !== this.product.id).slice(0, 4);
+                },
+                
+                get whatsappLink() {
+                    const msg =
+                        `🛍️ *Dubai Traders - Product Inquiry*\n\n` +
+                        `Product: *${this.product.name}*\n` +
+                        `Variant: ${this.product.subtitle}\n` +
+                        `Qty: ${this.qty}\n` +
+                        `Price: PKR ${(this.product.price * this.qty).toLocaleString()}\n\n` +
+                        `Please confirm availability and delivery.`;
+                    return 'https://wa.me/923343534500?text=' + encodeURIComponent(msg);
+                },
+                
+                addToCart() {
+                    this.cartCount += this.qty;
+                    this.toast.message = `${this.product.name} x${this.qty}`;
+                    this.toast.show = true;
+                    clearTimeout(this._toastTimer);
+                    this._toastTimer = setTimeout(() => { this.toast.show = false; }, 2500);
+                }
+            }
+        }
+    </script>
+    
+</body>
+</html>
+
