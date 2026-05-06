@@ -45,6 +45,7 @@
                 <div class="flex items-center gap-2">
                     <i class="fas fa-perfume text-rose-600 text-2xl"></i>
                     <h1 class="text-lg sm:text-xl font-bold text-gray-900">Dubai Traders</h1>
+                    <img src="images/logo.svg" alt="logo" class="w-10 h-10">
                 </div>
                 
                 <!-- Desktop Menu -->
@@ -59,7 +60,7 @@
                 <!-- Cart & Mobile Menu Button -->
                 <div class="flex items-center space-x-4">
                     <button class="relative text-gray-700 hover:text-rose-600 transition">
-                        <i class="fas fa-shopping-bag text-xl"></i>
+                        <a href="cart.html"><i class="fas fa-shopping-bag text-xl"></i></a>
                         <span class="absolute -top-2 -right-2 bg-rose-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">0</span>
                     </button>
                     <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden text-gray-700">
